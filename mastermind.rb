@@ -7,18 +7,28 @@ class Mastermind
   def initialize
     system ('clear')
     @@guesses_remaining = 12
-
+    @numbers = ["1", "2", "3", "4", "5", "6"]
+    @possible_guesses = @numbers.repeated_permutation(4).to_a
+    @guess = []
+    @@master_code = []
+    4.times do
+      @@master_code << rand(1..6).to_s
+    end
+    @current_count = []
+    @@prev_count = []
     @game = Game.new
     game_intro
   end
 
   def game_intro
     puts "Welcome to"
+    puts ".___  ___.      ___           _______.___________. _______ .______      .___  ___.  __  .__   __.  _______ "
+    puts "|   \\/   |     /   \\         /       |           ||   ____||   _  \\     |   \\/   | |  | |  \\ |  | |       \\ "
+    puts "|  \\  /  |    /  ^  \\       |   (----`---|  |----`|  |__   |  |_)  |    |  \\  /  | |  | |   \\|  | |  .--.  | "
+    puts "|  |\\/|  |   /  /_\\  \\       \\   \\       |  |     |   __|  |      /     |  |\\/|  | |  | |  . `  | |  |  |  | "
+    puts "|  |  |  |  /  _____  \\  .----)   |      |  |     |  |____ |  |\\  \\----.|  |  |  | |  | |  |\\   | |  '--'  | "
+    puts "|__|  |__| /__/     \\__\\ |_______/       |__|     |_______|| _| `._____||__|  |__| |__| |__| \\__| |_______/ "
 
-    puts "     __  __            _                     _           _
-    |  \\/  | __ _  ___| |_  ___  _ _  _ __  (_) _ _   __| |
-    | |\\/| |/ _` |(_-<|  _|/ -_)| '_|| '  \\ | || ' \\ / _` |
-    |_|  |_|\\__,_|/__/ \\__|\\___||_|  |_|_|_||_||_||_|\\__,_|"
     puts " "
     puts "CHOOSE YOUR GAME:"
     puts " "

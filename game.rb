@@ -1,44 +1,43 @@
 class Game < Mastermind
-  attr_accessor :correct, :position, :guesses_remaining
-
+  attr_accessor :correct, :position, :guesses_remaining, :prev_count, :possible_guesses
   def initialize
-    @@master_code = []
-    4.times do
-      @@master_code << rand(1..6).to_s
-    end
   end
 
-  def self.check(guess)
+  def self.check(guess, code)
     if @@player_name != "player"
+      code = @@player_code
       puts " "
       puts guess.join
     end
 
+    if @@player_name == "player"
+      code = @@master_code
+    end
+
     if @@guesses_remaining > 1
-      @@temp = @@master_code.dup
+      @@temp = code.dup
       @correct = 0
       @position = 0
       for i in (0..3)
         if (guess[i] == @@temp[i])
           @correct += 1
           @@temp[i] = "x"
-          guess[i] = "y"
         end
       end
 
       for j in (0..3)
         if guess.include?(@@temp[j])
           @position += 1
-          ind = guess.index(@@temp[j])
-          guess[ind] = "y"
         end
       end
 
+      @@prev_count = [@correct, @position]
       if @correct == 4
         winner
       else
         @@guesses_remaining -= 1
         feedback
+        return @@prev_count
         return true
       end
     else
@@ -47,10 +46,37 @@ class Game < Mastermind
       else
         puts "The computer failed to guess your code!"
       end
-      puts "GAME OVER"
-      puts "The secret code was #{@@master_code}"
+      puts "  _______      ___      .___  ___.  _______      ______   ____    ____  _______ .______
+ /  _____|    /   \\     |   \\/   | |   ____|    /  __  \\  \\   \\  /   / |   ____||   _  \\
+|  |  __     /  ^  \\    |  \\  /  | |  |__      |  |  |  |  \\   \\/   /  |  |__   |  |_)  |
+|  | |_ |   /  /_\\  \\   |  |\\/|  | |   __|     |  |  |  |   \\      /   |   __|  |      /
+|  |__| |  /  _____  \\  |  |  |  | |  |____    |  `--'  |    \\    /    |  |____ |  |\\  \\----.
+ \\______| /__/     \\__\\ |__|  |__| |_______|    \\______/      \\__/     |_______|| _| `._____|
+                                                                                             "
+      puts "The secret code was #{code}"
       play_again
     end
+  end
+
+  def guess_check(guess, code)
+    @@temp = code.dup
+    @correct = 0
+    @position = 0
+    for i in (0..3)
+      if (guess[i] == @@temp[i])
+        @correct += 1
+        @@temp[i] = "x"
+        #guess[i] = "y"
+      end
+    end
+
+    for j in (0..3)
+      if guess.include?(@@temp[j])
+        @position += 1
+      end
+    end
+    @current_count = [@correct, @position]
+    return @current_count
   end
 
   def self.feedback

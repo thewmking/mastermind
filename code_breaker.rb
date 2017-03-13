@@ -8,7 +8,8 @@ class Mastermind
       @guess = gets.chomp
     end
     @guess = @guess.split("")
-    if Game.check(@guess)
+    code = []
+    if Game.check(@guess, code)
       play_breaker
     end
   end
